@@ -93,6 +93,7 @@ node* successor(node *np) {
     }
 }
 
+// predecessor node in tree's traversal order (in order)
 node* predecessor(node *np) {
     if (np == NULL) {
         return NULL;
@@ -146,5 +147,40 @@ int subtree_insert_before(node *np, int element) {
         n->right = create_node(n, element);
     }
 
+    return 0;
+}
+
+void swap(node *ap, node *bp) {
+    int n;
+
+    n = ap->element;
+    ap->element = bp->element;
+    bp->element = n;
+}
+
+// delete a specific node of a tree
+int subtree_delete(node *np) {
+    if (np == NULL) {
+        return 0;
+    }
+    
+    if (np->left == NULL && np->right == NULL) {
+        free(np);
+        np = NULL;
+    }
+    
+    if (np->left) {
+        swap(np, predecessor(np));
+        subtree_delete(predecessor(np));
+    }
+    
+    if (np->right) {
+        swap(np, successor(np));
+        subtree_delete(successor(np));
+    }
+}
+
+// testing
+int main(void) {
     return 0;
 }
